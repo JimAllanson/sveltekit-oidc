@@ -1,10 +1,12 @@
 import type { MaybePromise } from "@sveltejs/kit/types/helper";
-import type { ServerRequest, ServerResponse } from '@sveltejs/kit/types/hooks';
+import type { RequestEvent as SvelteRequestEvent, ServerRequest, ServerResponse } from '@sveltejs/kit/types/hooks';
 
 export type AuthError = {
     error: string;
     error_description: string;
 }
+
+
 export interface Locals {
 	userid: string;
 	access_token: string;
@@ -13,6 +15,10 @@ export interface Locals {
 	user?: any;
     retries?: number;
 	cookieAttributes?: string;
+}
+
+export interface RequestEvent extends SvelteRequestEvent {
+	locals: Locals;
 }
 
 export type OidcContextClientFn = (request_path?: string, request_params?: Record<string, string>) => {
@@ -37,7 +43,7 @@ export interface OIDCFailureResponse extends AuthError {
 export type OIDCResponse = OIDCSuccessResponse & OIDCFailureResponse;
 
 export interface UserDetailsGeneratorFn {
-	(request: ServerRequest<Locals>, clientSecret: string): AsyncGenerator<ServerResponse, ServerResponse, ServerRequest<Locals>>
+	(event: RequestEvent, clientSecret: string): AsyncGenerator<ServerResponse, ServerResponse, RequestEvent>
 }
 export interface UserSession { 
 	user: any;
@@ -48,5 +54,5 @@ export interface UserSession {
 	auth_server_online: boolean;
 }
 export interface GetUserSessionFn {
-    (request: ServerRequest<Locals>, clientSecret: string): Promise<UserSession>
+    (event: RequestEvent, clientSecret: string): MaybePromise<App.Session>
 }

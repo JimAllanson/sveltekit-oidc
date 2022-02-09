@@ -204,7 +204,7 @@
 				error_description: e?.error_description
 			});
 			if ( refresh_page_on_session_timeout ) {
-				window.location.assign($page.path);
+				window.location.assign($page.url.pathname);
 			}
 		}
 	}
@@ -223,7 +223,7 @@
 							error_description: 'Session is not active'
 						});
 						if ( refresh_page_on_session_timeout ) {
-							window.location.assign($page.path);
+							window.location.assign($page.url.pathname);
 						} 
 					}
 				} catch(e) {}
@@ -240,7 +240,7 @@
 					if ( userInfo && (!$session.user || $session.user?.preferred_username !== userInfo?.preferred_username) ) {
 						const answer = confirm(`Welcome ${userInfo?.preferred_username || 'user' }. Refresh page!`)
 						if ( answer ) {
-							window.location.assign($page.path);
+							window.location.assign($page.url.pathname);
 						}
 					}
 				} catch(e) {}
@@ -274,7 +274,7 @@
 					AuthStore.accessToken.set(null);
 					AuthStore.refreshToken.set(null);
 					if ( window.location.toString().includes('event=logout') ) {
-						window.location.assign($page.path);
+						window.location.assign($page.url.pathname);
 					}
 				} else {
 					AuthStore.isAuthenticated.set(true);
@@ -289,7 +289,7 @@
 					}, timeoutDuration);
 					AuthStore.authError.set(null);
 					if ( window.location.toString().includes('code=') ) {
-						window.location.assign($page.path);
+						window.location.assign($page.url.pathname);
 					}
 
 					try {
@@ -308,7 +308,7 @@
 				error_description: 'Auth Server Connection Error'
 			});
 			if ( window.location.toString().includes('event=logout') ) {
-				window.location.assign($page.path);
+				window.location.assign($page.url.pathname);
 			}
 		}
 	}

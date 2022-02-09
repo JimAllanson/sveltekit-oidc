@@ -13,7 +13,7 @@
         if ( browser ) {
             const oidcPromise: OidcContextClientPromise = getContext(OIDC_CONTEXT_CLIENT_PROMISE);
             const oidc_func = await oidcPromise;
-            const { redirect } = oidc_func($page.path, $page.params);
+            const { redirect } = oidc_func($page.url.pathname, $page.params);
             if ( !$session?.user || !$session?.access_token || !$session?.user ) {
                 try {
                     console.log(redirect)
